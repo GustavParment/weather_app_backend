@@ -16,8 +16,6 @@ public class WeatherServiceImpl implements WeatherService {
     private final WeatherRepository weatherRepository;
     private final WeatherApiService weatherApiService;
 
-
-
     @Override
     public List<WeatherEntity> getAllWeather() {
         Optional <WeatherEntity> response = weatherRepository
@@ -37,15 +35,16 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public WeatherEntity getWeatherById(Long id) {
-        WeatherEntity entityById = weatherRepository
-                .findById(id)
-                .orElse(null);
+    public Optional <WeatherEntity> getWeatherById(Long id) {
+      Optional <WeatherEntity> entityByIdOpt = weatherRepository.findById(id);
 
-        if(entityById == null) {
-            return null;
-        }
-        return entityById;
+      entityByIdOpt.ifPresentOrElse(
+                weatherEntity -> System.out.println(
+                        "Found weather data for id: " + id),
+                () -> System.out.println("No weather found with id: " + id)
+        );
+
+        return entityByIdOpt;
     }
 
     @Override
@@ -88,7 +87,9 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public WeatherEntity convertToEntity(String cityName, WeatherDTO dto) {
-        WeatherDataList data = dto.getData().isEmpty() ? null : dto.getData().get(0);
+        WeatherDataList data = dto.getData()
+                .isEmpty() ? null : dto.getData().getFirst();
+
         if (data == null) {
             throw new IllegalArgumentException("Weather data is null");
         }
@@ -121,5 +122,10 @@ public class WeatherServiceImpl implements WeatherService {
         WeatherEntity convertedData = convertToEntity(cityName,weather);
 
         return weatherRepository.save(convertedData);
+    }
+
+    @Override
+    public Optional <Double> getAverageTemperature(String cityName) {
+        return weatherRepository.getAverageTemperatureForCity(cityName.toUpperCase());
     }
 }

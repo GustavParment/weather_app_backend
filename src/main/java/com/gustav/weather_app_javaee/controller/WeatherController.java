@@ -10,6 +10,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -42,32 +45,18 @@ public class WeatherController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    @RateLimiter(name = "rateLimiter")
-    public ResponseEntity<?> updateWeather(
-            @PathVariable Long id,
-            @RequestBody WeatherDTO weatherDTO) {
-        try {
-            WeatherEntity updatedWeather = weatherService.updateWeather(id, weatherDTO);
-
-            if (updatedWeather == null) {
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body("No weather data found for given city");
-            }
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(weatherService.updateWeather(id, weatherDTO));
-
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal Server Error" + e.getMessage());
-
-        }
-
-
+    @GetMapping("/average-temperature/{cityName}")
+    public ResponseEntity<String> getAverageTemperature(@PathVariable String cityName) {
+        return weatherService.getAverageTemperature(cityName)
+                .map(avgTemp -> ResponseEntity.ok(
+                        "Average temperature for "
+                                + cityName + ": "
+                                + avgTemp + "°C"))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No weather data found for city: " + cityName));
     }
+
+
 
     @DeleteMapping("/{id}")
     @RateLimiter(name = "myRateLimiter")
@@ -91,6 +80,16 @@ public class WeatherController {
                     .body("Internal Server Error" + e.getMessage());
 
         }
+    }
+
+    @GetMapping("/{id}")
+    @RateLimiter(name = "rateLimiter")
+    public ResponseEntity<WeatherEntity> getWeatherById(@PathVariable Long id) {
+        Optional<WeatherEntity> weatherEntityOptional = weatherService.getWeatherById(id);
+
+        return weatherEntityOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null));
     }
 }
 
