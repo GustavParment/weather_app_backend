@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@Builder
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Entity
 @Table(name = "weather")
 public class WeatherEntity {
 
