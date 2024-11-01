@@ -45,8 +45,13 @@ public class WeatherApiController {
         return weatherApiService.getWeatherFromExternalApi(city)
                 .flatMap(weatherDTO -> {
                     WeatherEntity updatedWeather = weatherService.updateWeather(id, weatherDTO);
+
                     if (updatedWeather == null) {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).<WeatherEntity>build());
+                        return Mono.just(
+                                ResponseEntity
+                                        .status(HttpStatus.NOT_FOUND)
+                                        .<WeatherEntity>build()
+                        );
                     }
                     return Mono.just(ResponseEntity.ok(updatedWeather));
                 })
