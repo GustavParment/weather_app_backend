@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "weather")
+@Table(name = "weather_data")
 public class WeatherEntity {
 
     @Id

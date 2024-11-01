@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class WeatherDTO {
-
     @JsonProperty("city_name")
     private String cityName;
 

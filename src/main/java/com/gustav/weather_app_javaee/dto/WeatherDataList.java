@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherDataList {
-
     @JsonProperty("app_max_temp")
     private double appMaxTemp;
 
