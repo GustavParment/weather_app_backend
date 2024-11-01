@@ -56,8 +56,6 @@ public class WeatherController {
                         .body("No weather data found for city: " + cityName));
     }
 
-
-
     @DeleteMapping("/{id}")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<String> deleteWeatherById(@PathVariable Long id) {

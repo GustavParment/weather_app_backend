@@ -59,9 +59,4 @@ public class WeatherApiController {
                 .doOnError(error -> System.out.println("Error updating weather data: " + error.getMessage()));
     }
 
-
-
-
-
-
 }

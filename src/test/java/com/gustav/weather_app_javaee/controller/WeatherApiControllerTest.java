@@ -6,16 +6,20 @@ import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.repo.WeatherRepository;
 import com.gustav.weather_app_javaee.service.WeatherApiService;
 import com.gustav.weather_app_javaee.service.WeatherService;
+import com.gustav.weather_app_javaee.service.WeatherServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 import java.util.Collections;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,15 +44,14 @@ class WeatherApiControllerTest {
 
     private WeatherDTO mockWeatherDTO;
 
-    private WeatherDataList mockWeatherData;
-
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
+        weatherService = new WeatherServiceImpl(weatherRepository, weatherApiService);
         mockWeatherDTO = mockValueDto();
 
     }
+
     private static WeatherDTO mockValueDto() {
         WeatherDTO mockWeatherDTO = new WeatherDTO();
         mockWeatherDTO.setCityName("Stockholm");
@@ -66,7 +69,6 @@ class WeatherApiControllerTest {
         mockWeatherDataList.setMinTemp(1337);
         mockWeatherDTO.setData(Collections.singletonList(mockWeatherDataList));
 
-
         WeatherDataList.WeatherDescription mockWeatherDescription =
                 new WeatherDataList.WeatherDescription();
 
@@ -83,7 +85,7 @@ class WeatherApiControllerTest {
        korrekt hämtar väderinformation för en stad och returnerar
        den i form av en ResponseEntity med status OK.*/
     @Test
-    void fetchWeatherByName_ShouldReturnWeatherDTO_WhenCityExists() {
+    void fetch_Weather_By_Name_Should_Return_Weather_DTO_WhenCityExists() {
         Mockito.when(weatherApiService.getWeatherFromExternalApi(anyString()))
                 .thenReturn(Mono.just(mockValueDto()));
 
@@ -100,10 +102,8 @@ class WeatherApiControllerTest {
     }
 
     // Testa att DTO konverteras till entitet och att den skrivs till databasen
-
     @Test
-    void addWeather_ShouldConvertDtoToEntity_And_Save_To_DB() {
-        // Arrange
+    void addWeather_Should_Convert_Dto_To_Entity_And_Save_To_DB() {
         WeatherEntity savedEntity = new WeatherEntity();
         savedEntity.setId(1337L);
         savedEntity.setCity_name(mockValueDto().getCityName());
@@ -118,8 +118,6 @@ class WeatherApiControllerTest {
         savedEntity.setMaxTemp(mockValueDto().getData().getFirst().getMaxTemp());
         savedEntity.setMinTemp(mockValueDto().getData().getFirst().getMinTemp());
 
-
-        // Mocka repo-metoden
         when(weatherRepository.save(any(WeatherEntity.class))).thenReturn(savedEntity);
 
         WeatherEntity result = weatherService.addWeather(
@@ -130,6 +128,46 @@ class WeatherApiControllerTest {
         assertEquals(savedEntity.getCity_name(), result.getCity_name());
         assertEquals(savedEntity.getCountry_code(), result.getCountry_code());
 
+    }
+
+    @Test
+    void update_Weather_Should_Update_Entity_And_Save_Update_To_DB() {
+        Long mockId = 1337L;
+        WeatherEntity existingEntity = new WeatherEntity();
+
+        existingEntity.setId(mockId);
+        existingEntity.setCity_name("Stockholm");
+        existingEntity.setCountry_code("SE");
+        existingEntity.setTemp(10);
+        existingEntity.setClouds(50);
+        existingEntity.setDatetime("2024-10-31");
+
+        when(weatherRepository.findById(mockId)).thenReturn(Optional.of(existingEntity));
+
+        WeatherDataList mockDataForUpdate = new WeatherDataList();
+
+        mockDataForUpdate.setTemp(15.0);
+        mockDataForUpdate.setClouds(69);
+        mockDataForUpdate.setDatetime("2024-11-01");
+
+        mockValueDto().setData(Collections.singletonList(mockDataForUpdate));
+
+        when(weatherApiService.getWeatherFromExternalApi("Stockholm"))
+                .thenReturn(Mono.just(mockValueDto()));
+
+        Mono<ResponseEntity<WeatherEntity>> response = weatherApiController
+                .updateWeather(mockId, "Stockholm");
+
+        response.subscribe(res ->{
+            assertEquals(HttpStatus.OK, res.getStatusCode());
+            assertNotNull(res.getBody());
+            assertEquals(15.0, res.getBody().getTemp());
+            assertEquals(69, res.getBody().getClouds());
+            assertEquals("2024-11-01", res.getBody().getDatetime());
+        }, error -> {
+            fail("Testat misslyckades på grund av att du e sämst på att skriva tester"
+                    + error.getMessage());
+        });
     }
 }
 
