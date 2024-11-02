@@ -1,7 +1,7 @@
-package com.gustav.weather_app_javaee.service;
+package com.gustav.weather_app_javaee.service.weather;
 
-import com.gustav.weather_app_javaee.dto.WeatherDTO;
-import com.gustav.weather_app_javaee.dto.WeatherDataList;
+import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.WeatherDataList;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.repo.WeatherRepository;
 import lombok.AllArgsConstructor;

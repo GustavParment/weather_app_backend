@@ -1,14 +1,12 @@
-package com.gustav.weather_app_javaee.controller;
+package com.gustav.weather_app_javaee.controller.user;
 
-import com.gustav.weather_app_javaee.dto.UserDTO;
 import com.gustav.weather_app_javaee.model.UserEntity;
-import com.gustav.weather_app_javaee.service.UserService;
+import com.gustav.weather_app_javaee.model.dto.UserDTO;
+import com.gustav.weather_app_javaee.service.user.UserService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -20,7 +18,8 @@ public class UserController {
     @GetMapping("/by/{id}")
     public ResponseEntity <?> getUserById(@PathVariable Long id) {
         try {
-            if (!userService.getUserById(id).equals(id)){
+            UserEntity  user = userService.getUserById(id);
+            if (user == null){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return ResponseEntity
@@ -56,5 +55,6 @@ public class UserController {
         }
 
     }
+
 
 }

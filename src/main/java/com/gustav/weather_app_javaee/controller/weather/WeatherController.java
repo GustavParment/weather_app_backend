@@ -1,16 +1,12 @@
-package com.gustav.weather_app_javaee.controller;
+package com.gustav.weather_app_javaee.controller.weather;
 
-import com.gustav.weather_app_javaee.dto.WeatherDTO;
-import com.gustav.weather_app_javaee.dto.WeatherDataList;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
-import com.gustav.weather_app_javaee.service.WeatherService;
+import com.gustav.weather_app_javaee.service.weather.WeatherService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 

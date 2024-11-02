@@ -1,6 +1,6 @@
-package com.gustav.weather_app_javaee.service;
+package com.gustav.weather_app_javaee.service.weather;
 
-import com.gustav.weather_app_javaee.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;

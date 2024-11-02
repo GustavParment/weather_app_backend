@@ -1,6 +1,5 @@
 package com.gustav.weather_app_javaee.model;
 
-import com.gustav.weather_app_javaee.dto.WeatherDataList;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,19 +1,19 @@
 package com.gustav.weather_app_javaee.controller;
 
-import com.gustav.weather_app_javaee.dto.WeatherDTO;
-import com.gustav.weather_app_javaee.dto.WeatherDataList;
+import com.gustav.weather_app_javaee.controller.weather.WeatherApiController;
+import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.WeatherDataList;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.repo.WeatherRepository;
-import com.gustav.weather_app_javaee.service.WeatherApiService;
-import com.gustav.weather_app_javaee.service.WeatherService;
-import com.gustav.weather_app_javaee.service.WeatherServiceImpl;
+import com.gustav.weather_app_javaee.service.weather.WeatherApiService;
+import com.gustav.weather_app_javaee.service.weather.WeatherService;
+import com.gustav.weather_app_javaee.service.weather.WeatherServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
