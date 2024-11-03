@@ -10,7 +10,7 @@ import static com.gustav.weather_app_javaee.authorities.UserPermission.*;
 public enum UserRole {
 
     GUEST(GET),
-    USER(GET, PUT),
+    USER(GET, POST),
     ADMIN(GET, POST, PUT, DELETE);
 
     private final List<String> permission;

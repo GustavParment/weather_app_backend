@@ -31,6 +31,7 @@ public class WeatherApiController {
                 .doOnError(error -> System.out.println("Error fetching weather data: " + error.getMessage()));
     }
 
+    //TODO-Maybe change to GET since GUESt are using this
     @PostMapping("/fetch-and-save/{city}")
     @RateLimiter(name = "rateLimiter")
     public Mono<WeatherDTO> fetchWeatherData(@PathVariable String city) {
@@ -38,7 +39,7 @@ public class WeatherApiController {
                 .doOnSuccess(weatherDTO -> weatherService.addWeather(city, weatherDTO))
                 .doOnError(error -> System.out.println("Error fetching weather data: " + error.getMessage()));
     }
-
+    //TODO-Maybe change to GET Since GUEST are using this
     @PutMapping("/update/{id}/{city}")
     @RateLimiter(name = "rateLimiter")
     public Mono<ResponseEntity<WeatherEntity>> updateWeather(@PathVariable Long id, @PathVariable String city) {

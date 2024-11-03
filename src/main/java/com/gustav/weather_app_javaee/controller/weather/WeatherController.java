@@ -28,10 +28,7 @@ public class WeatherController {
             }
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(
-                            "<---Successfully retrieved all the weather from DB---> "
-                                    + weatherService.getAllWeather()
-                    );
+                    .body(weatherService.getAllWeather());
         } catch (Exception e) {
             e.printStackTrace();
 
