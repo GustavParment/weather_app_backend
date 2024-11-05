@@ -33,7 +33,6 @@ public class WeatherApiController {
 
     //TODO-Maybe change to GET since GUESt are using this
     @PostMapping("/fetch-and-save/{city}")
-    @RateLimiter(name = "rateLimiter")
     public Mono<WeatherDTO> fetchWeatherData(@PathVariable String city) {
         return weatherApiService.getWeatherFromExternalApi(city)
                 .doOnSuccess(weatherDTO -> weatherService.addWeather(city, weatherDTO))
@@ -41,7 +40,6 @@ public class WeatherApiController {
     }
     //TODO-Maybe change to GET Since GUEST are using this
     @PutMapping("/update/{id}/{city}")
-    @RateLimiter(name = "rateLimiter")
     public Mono<ResponseEntity<WeatherEntity>> updateWeather(@PathVariable Long id, @PathVariable String city) {
         return weatherApiService.getWeatherFromExternalApi(city)
                 .flatMap(weatherDTO -> {

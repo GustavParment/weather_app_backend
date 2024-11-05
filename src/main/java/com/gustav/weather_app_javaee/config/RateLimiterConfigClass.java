@@ -8,7 +8,6 @@ import java.time.Duration;
 
 @Configuration
 public class RateLimiterConfigClass {
-
     @Bean
     public RateLimiter rateLimiter() {
         RateLimiterConfig config = RateLimiterConfig

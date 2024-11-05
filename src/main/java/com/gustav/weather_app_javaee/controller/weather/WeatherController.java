@@ -18,7 +18,6 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping("/all")
-    @RateLimiter(name = "rateLimiter")
     public ResponseEntity<?> getAllWeatherFromDb() {
         try {
             if (weatherService.getAllWeather().isEmpty()) {
@@ -50,7 +49,6 @@ public class WeatherController {
     }
 
     @DeleteMapping("/{id}")
-    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<String> deleteWeatherById(@PathVariable Long id) {
         boolean deleted = weatherService.deleteWeatherById(id);
 

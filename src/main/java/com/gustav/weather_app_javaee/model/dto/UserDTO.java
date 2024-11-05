@@ -23,6 +23,7 @@ public class UserDTO {
     private String username;
 
     @NotBlank(message ="Password is required")
+    @Size(min = 6, message = "Passowrd must be at least 6 characters long")
     @JsonProperty("password")
     private String password;
 
