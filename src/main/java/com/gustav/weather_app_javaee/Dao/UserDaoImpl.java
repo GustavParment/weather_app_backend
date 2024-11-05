@@ -12,10 +12,13 @@ import java.util.List;
 public class UserDaoImpl implements UserDao{
     private final UserRepository userRepository;
 
-
-
     @Override
     public List<UserEntity> findUserStartingWith(String prefix) {
         return userRepository.findByUsernameStartingWith(prefix);
+    }
+
+    @Override
+    public boolean updatePassword(String username, String password) {
+        return false;
     }
 }
