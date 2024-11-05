@@ -30,7 +30,6 @@ public class UserController {
                     );
 
         }catch(Exception e) {
-            e.printStackTrace();
             return ResponseEntity
                     .status(500)
                     .body("Internal server error: " + e.getMessage());
@@ -47,8 +46,6 @@ public class UserController {
                     .body("User successfully added " + userService.addUser(userDTO));
 
         }catch (Exception e) {
-            e.printStackTrace();
-
             return ResponseEntity
                     .status(500)
                     .body("Internal Server Error" + e.getMessage());
@@ -56,5 +53,9 @@ public class UserController {
 
     }
 
-
+/* TODO
+    -Skriva tester
+    -Returnera Https. eller Int i status()??
+    -Felhantera med Lambda?
+*  */
 }

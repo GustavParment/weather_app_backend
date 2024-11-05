@@ -35,17 +35,13 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Hämta användarnamn från autentiseringen
         String username = loginRequestDTO.getUsername();
 
-        // Hämta användaren (och dess roll) från databasen
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Generera JWT-token
         String token = jwtTokenProvider.generateToken(authentication);
 
-        // Skapa AuthResponseDTO och returnera både token och roll
         return new AuthResponseDTO(token, user.getRole().name());
     }
 

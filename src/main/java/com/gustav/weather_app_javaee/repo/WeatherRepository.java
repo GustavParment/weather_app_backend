@@ -20,11 +20,13 @@ public interface WeatherRepository extends JpaRepository<WeatherEntity, Long> {
     @Query(value = "SELECT * FROM weather w " +
             "WHERE w.city_name = :city_name",
             nativeQuery = true)
-    WeatherEntity getWeatherFromDb(@Param("city_name") String cityName);
+    WeatherEntity getWeatherByCityName(@Param("city_name") String cityName);
 
     @Query(value = "SELECT * FROM weather w " +
             "ORDER BY w.city_name ASC, datetime DESC ",
             nativeQuery = true)
-    List<WeatherEntity> getWeatherNameAsc();
+    List<WeatherEntity> getWeatherByNameAsc();
+
+    //TODO - Fixa getWeatherByNameAsc() just nu kraschar appen när jag försöker använda den
 
 }

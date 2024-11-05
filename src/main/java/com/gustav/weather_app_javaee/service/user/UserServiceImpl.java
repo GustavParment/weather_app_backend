@@ -1,9 +1,10 @@
 package com.gustav.weather_app_javaee.service.user;
 
+import com.gustav.weather_app_javaee.Dao.UserDao;
 import com.gustav.weather_app_javaee.authorities.UserRole;
 import com.gustav.weather_app_javaee.model.dto.UserDTO;
 import com.gustav.weather_app_javaee.model.UserEntity;
-import com.gustav.weather_app_javaee.repo.UserRepository;
+import com.gustav.weather_app_javaee.service.converter.GenericConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,33 +12,26 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserDao userDao;
+    private final GenericConverter converter;
 
     @Override
     public UserEntity addUser(UserDTO dto) {
-        UserEntity convertedUser = convertToEntity(dto);
+        UserEntity convertedUser = converter.convertToUserEntity(dto);
 
-        return userRepository.save(convertedUser);
+        return userDao.addUser(convertedUser);
     }
 
     @Override
-    public UserEntity updateUser(UserDTO user) {
-        return null;
+    public UserEntity updateUser(UserDTO dto) {
+        UserEntity convertedUser = converter.convertToUserEntity(dto);
+        return userDao.updateUser(convertedUser);
     }
 
     @Override
     public UserEntity getUserById(Long id) {
-        return null;
+        return userDao.getUserById(id);
     }
 
-    @Override
-    public UserEntity convertToEntity(UserDTO dto) {
-        return UserEntity.builder()
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .role(dto.getRole()
-                        !=null ? dto.getRole() : UserRole.USER )
-                .build();
-    }
+
 }

@@ -6,7 +6,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 
 @Configuration
-public class WeatherWebClientConfig {
+public class WebClientConfigClass {
 
     @Bean
     public WebClient.Builder webClientBuilder() {

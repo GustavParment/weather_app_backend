@@ -37,7 +37,7 @@ public class WeatherController {
         }
     }
 
-    @GetMapping("/average-temperature/{cityName}")
+    @GetMapping("/average-temp/{cityName}")
     public ResponseEntity<String> getAverageTemperature(@PathVariable String cityName) {
         return weatherService.getAverageTemperature(cityName)
                 .map(avgTemp -> ResponseEntity.ok(

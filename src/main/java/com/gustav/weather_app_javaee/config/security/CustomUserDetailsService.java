@@ -1,27 +1,24 @@
 package com.gustav.weather_app_javaee.config.security;
 
 
+import com.gustav.weather_app_javaee.Dao.UserDao;
 import com.gustav.weather_app_javaee.repo.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 
-
+@AllArgsConstructor
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
-
-    private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        return userDao.findUser(username);
     }
 }
+
+//TODO - Skriva test som kollar om loadUserByUsername kastar exception

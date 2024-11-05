@@ -21,6 +21,12 @@ public class SecurityFilterChainClass {
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     private JwtAuthenticationFilter authenticationFilter;
+    /*
+    Todo
+     - Fixa securityFilterChain rätt roll ska kunna göra rätt request
+     - Skriva Tester??
+
+    * */
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
