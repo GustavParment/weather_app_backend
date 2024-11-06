@@ -7,6 +7,7 @@ public interface UserService {
     UserEntity addUser(UserDTO user);
     UserEntity updateUser(UserDTO user);
     UserEntity getUserById(Long id);
+    boolean findUserByName(String name);
 
 
 }

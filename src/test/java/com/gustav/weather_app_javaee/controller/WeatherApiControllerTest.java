@@ -1,10 +1,12 @@
 package com.gustav.weather_app_javaee.controller;
 
+import com.gustav.weather_app_javaee.Dao.WeatherDao;
 import com.gustav.weather_app_javaee.controller.weather.WeatherApiController;
 import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
 import com.gustav.weather_app_javaee.model.dto.WeatherDataList;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.repo.WeatherRepository;
+import com.gustav.weather_app_javaee.service.converter.GenericConverter;
 import com.gustav.weather_app_javaee.service.weather.WeatherApiService;
 import com.gustav.weather_app_javaee.service.weather.WeatherService;
 import com.gustav.weather_app_javaee.service.weather.WeatherServiceImpl;
@@ -31,7 +33,10 @@ import static org.mockito.Mockito.*;
 class WeatherApiControllerTest {
 
     @Mock
-    private WeatherRepository weatherRepository;
+    private GenericConverter converter;
+
+    @Mock
+    private WeatherDao weatherDao;
 
     @Mock
     private WeatherApiService weatherApiService;
@@ -47,7 +52,7 @@ class WeatherApiControllerTest {
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        weatherService = new WeatherServiceImpl(weatherRepository, weatherApiService);
+        weatherService = new WeatherServiceImpl(weatherDao, weatherApiService, converter);
         mockWeatherDTO = mockValueDto();
 
     }
@@ -118,11 +123,9 @@ class WeatherApiControllerTest {
         savedEntity.setMaxTemp(mockValueDto().getData().getFirst().getMaxTemp());
         savedEntity.setMinTemp(mockValueDto().getData().getFirst().getMinTemp());
 
-        when(weatherRepository.save(any(WeatherEntity.class))).thenReturn(savedEntity);
+        when(weatherDao.saveWeatherData(any(WeatherEntity.class))).thenReturn(savedEntity);
 
-        WeatherEntity result = weatherService.addWeather(
-                savedEntity.getCity_name(),mockWeatherDTO
-        );
+        WeatherEntity result = weatherDao.saveWeatherData(savedEntity);
 
         assertNotNull(result);
         assertEquals(savedEntity.getCity_name(), result.getCity_name());
@@ -142,7 +145,7 @@ class WeatherApiControllerTest {
         existingEntity.setClouds(50);
         existingEntity.setDatetime("2024-10-31");
 
-        when(weatherRepository.findById(mockId)).thenReturn(Optional.of(existingEntity));
+        when(weatherDao.getWeatherById(mockId)).thenReturn(Optional.of(existingEntity));
 
         WeatherDataList mockDataForUpdate = new WeatherDataList();
 
