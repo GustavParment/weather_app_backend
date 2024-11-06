@@ -1,9 +1,9 @@
 package com.gustav.weather_app_javaee.controller.user;
 
-import com.gustav.weather_app_javaee.model.dto.AuthResponseDTO;
-import com.gustav.weather_app_javaee.model.dto.LoginRequestDTO;
-import com.gustav.weather_app_javaee.model.dto.MessageResponseDTO;
+import com.gustav.weather_app_javaee.model.dto.user.AuthResponseDTO;
+import com.gustav.weather_app_javaee.model.dto.user.LoginDTO;
 import com.gustav.weather_app_javaee.service.login.AuthService;
+import com.gustav.weather_app_javaee.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     private final AuthService authService;
+    private final UserService userService;
+
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
-        AuthResponseDTO authResponseDTO = authService.login(loginRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(authResponseDTO);
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.authenticate(loginDTO));
     }
 
     @PostMapping("/logout")

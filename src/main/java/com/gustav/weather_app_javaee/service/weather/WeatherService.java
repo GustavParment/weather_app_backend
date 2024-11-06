@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.service.weather;
 
-import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import reactor.core.publisher.Mono;
 

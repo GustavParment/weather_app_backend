@@ -3,15 +3,13 @@ package com.gustav.weather_app_javaee.controller.user;
 import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
 import com.gustav.weather_app_javaee.exception.UserNotFoundException;
 import com.gustav.weather_app_javaee.model.UserEntity;
-import com.gustav.weather_app_javaee.model.dto.UserDTO;
+import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
 import com.gustav.weather_app_javaee.service.user.UserService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @AllArgsConstructor
 @RestController

@@ -1,8 +1,7 @@
-package com.gustav.weather_app_javaee.config.security;
+package com.gustav.weather_app_javaee.security.jwt;
 
 
 import com.gustav.weather_app_javaee.Dao.UserDao;
-import com.gustav.weather_app_javaee.repo.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

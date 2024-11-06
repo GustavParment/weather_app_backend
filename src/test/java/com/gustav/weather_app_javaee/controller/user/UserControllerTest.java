@@ -5,7 +5,7 @@ package com.gustav.weather_app_javaee.controller.user;
 import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
 import com.gustav.weather_app_javaee.exception.UserNotFoundException;
 import com.gustav.weather_app_javaee.model.UserEntity;
-import com.gustav.weather_app_javaee.model.dto.UserDTO;
+import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
 import com.gustav.weather_app_javaee.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

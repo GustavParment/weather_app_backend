@@ -1,7 +1,6 @@
 package com.gustav.weather_app_javaee.Dao;
 
 import com.gustav.weather_app_javaee.model.UserEntity;
-import com.gustav.weather_app_javaee.model.dto.UserDTO;
 import com.gustav.weather_app_javaee.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

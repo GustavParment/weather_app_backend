@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.model.dto;
+package com.gustav.weather_app_javaee.model.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

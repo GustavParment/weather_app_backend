@@ -2,8 +2,8 @@ package com.gustav.weather_app_javaee.service.converter;
 
 import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
-import com.gustav.weather_app_javaee.model.dto.UserDTO;
-import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
+import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

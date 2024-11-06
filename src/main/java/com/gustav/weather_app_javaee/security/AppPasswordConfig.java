@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.config.security;
+package com.gustav.weather_app_javaee.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

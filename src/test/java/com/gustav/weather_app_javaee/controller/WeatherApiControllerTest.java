@@ -2,10 +2,9 @@ package com.gustav.weather_app_javaee.controller;
 
 import com.gustav.weather_app_javaee.Dao.WeatherDao;
 import com.gustav.weather_app_javaee.controller.weather.WeatherApiController;
-import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
-import com.gustav.weather_app_javaee.model.dto.WeatherDataList;
+import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.weather.WeatherDataList;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
-import com.gustav.weather_app_javaee.repo.WeatherRepository;
 import com.gustav.weather_app_javaee.service.converter.GenericConverter;
 import com.gustav.weather_app_javaee.service.weather.WeatherApiService;
 import com.gustav.weather_app_javaee.service.weather.WeatherService;

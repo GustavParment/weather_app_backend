@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.controller.weather;
 
-import com.gustav.weather_app_javaee.model.dto.WeatherDTO;
+import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.service.weather.WeatherApiService;
 import com.gustav.weather_app_javaee.service.weather.WeatherService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/fetch")
 public class WeatherApiController {
 
     private final WeatherApiService weatherApiService;
@@ -22,7 +22,7 @@ public class WeatherApiController {
         this.weatherService = weatherService;
     }
 
-    @GetMapping("/fetch/{city}")
+    @GetMapping("/{city}")
     @RateLimiter(name = "rateLimiter")
     public Mono<ResponseEntity<WeatherDTO>> fetchWeatherByName(@PathVariable String city) {
         return weatherApiService.getWeatherFromExternalApi(city)
@@ -32,7 +32,7 @@ public class WeatherApiController {
     }
 
     //TODO-Maybe change to GET since GUESt are using this
-    @PostMapping("/fetch-and-save/{city}")
+    @PostMapping("/save/{city}")
     public Mono<WeatherDTO> fetchWeatherData(@PathVariable String city) {
         return weatherApiService.getWeatherFromExternalApi(city)
                 .doOnSuccess(weatherDTO -> weatherService.addWeather(city, weatherDTO))
