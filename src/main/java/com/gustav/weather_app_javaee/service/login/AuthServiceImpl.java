@@ -5,6 +5,7 @@ import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.model.dto.AuthResponseDTO;
 import com.gustav.weather_app_javaee.model.dto.LoginRequestDTO;
 import com.gustav.weather_app_javaee.repo.UserRepository;
+import com.gustav.weather_app_javaee.service.login.logout.LogoutService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,12 +17,16 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final LogoutService logoutService;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
-                           JwtTokenProvider jwtTokenProvider, UserRepository userRepository) {
+                           JwtTokenProvider jwtTokenProvider,
+                           UserRepository userRepository,
+                           LogoutService logoutService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
+        this.logoutService = logoutService;
     }
 
     @Override
@@ -43,6 +48,12 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtTokenProvider.generateToken(authentication);
 
         return new AuthResponseDTO(token, user.getRole().name());
+    }
+
+    @Override
+    public void logout(String token) {
+        logoutService.addToBlackList(token);
+
     }
 
 }

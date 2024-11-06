@@ -1,6 +1,7 @@
 package com.gustav.weather_app_javaee.config.security.jwt;
 
 
+import com.gustav.weather_app_javaee.service.login.logout.LogoutService;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +17,12 @@ import java.util.Date;
 public class JwtTokenProvider {
     @Value("${security.jwt.secret-key}")
     private String jwtSecretKey;
-
     private long jwtExpiration = 3600000;
+    private final LogoutService logoutService;
+
+    public JwtTokenProvider(LogoutService logoutService) {
+        this.logoutService = logoutService;
+    }
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
@@ -49,6 +54,9 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token){
+        if (logoutService.isTokenBlackListed(token)){
+            return false;
+        }
         try {
             Jwts.parser()
                     .verifyWith((SecretKey) key())

@@ -7,7 +7,6 @@ import com.gustav.weather_app_javaee.exception.UserNotFoundException;
 import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.model.dto.UserDTO;
 import com.gustav.weather_app_javaee.service.user.UserService;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,11 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {

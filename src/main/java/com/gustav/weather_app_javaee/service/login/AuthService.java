@@ -5,4 +5,5 @@ import com.gustav.weather_app_javaee.model.dto.LoginRequestDTO;
 
 public interface AuthService {
     AuthResponseDTO login(LoginRequestDTO loginRequestDTO);
+    void logout(String token);
 }

@@ -43,6 +43,13 @@ public class UserController {
 
     }
 
+//    @PutMapping("/update")
+//    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO) {
+//        if (userService.findUserByName(userDTO.getUsername())){
+//            throw new UserAlreadyExistsException("Username already exists");
+//        }
+//    }
+
 /* TODO
     -Skriva tester
     -Returnera Https. eller Int i status()??

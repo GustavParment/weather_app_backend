@@ -1,5 +1,6 @@
 package com.gustav.weather_app_javaee.config.security;
 
+import com.gustav.weather_app_javaee.authorities.UserRole;
 import com.gustav.weather_app_javaee.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.gustav.weather_app_javaee.config.security.jwt.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,14 @@ public class SecurityFilterChainClass {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/api/v1/**").permitAll()
-                        .requestMatchers("/", "/api/auth/**").permitAll()
+                        .requestMatchers("/","/api/v1/weather/all").permitAll()
+                        .requestMatchers("/", "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/Weather/update/{id}/{city}").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/api/v1/Weather/delete/{id}").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/api/v1/user//by/{id}").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/api/v1/user/update/{id}").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/api/v1/average-temp/{cityName}").hasRole(UserRole.USER.name())
+                        .requestMatchers("/api/v1/user/add").hasRole(UserRole.GUEST.name())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
