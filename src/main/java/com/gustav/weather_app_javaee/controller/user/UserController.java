@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+
     @GetMapping("/by/{id}")
     public ResponseEntity <?> getUserById(@PathVariable Long id) {
         UserEntity  user = userService.getUserById(id);
@@ -40,6 +41,7 @@ public class UserController {
                 .body("USER CREATED successfully" + userService.addUser(userDTO));
 
     }
+
 
 //    @PutMapping("/update")
 //    public ResponseEntity<String> updateUser(@RequestBody UserDTO userDTO) {

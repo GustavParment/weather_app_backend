@@ -1,48 +1,73 @@
 package com.gustav.weather_app_javaee.controller.user;
 
-import com.gustav.weather_app_javaee.model.dto.user.AuthResponseDTO;
-import com.gustav.weather_app_javaee.model.dto.user.LoginDTO;
-import com.gustav.weather_app_javaee.service.login.AuthService;
-import com.gustav.weather_app_javaee.service.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+
+import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.security.jwt.AuthenticationResponse;
+import com.gustav.weather_app_javaee.security.jwt.AuthenticationRequest;
+import com.gustav.weather_app_javaee.security.jwt.JwtUtil;
+
+import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
-@RestController()
-@RequestMapping("/api/v1/auth")
+
+@Slf4j
+@RestController
+@CrossOrigin("*")
 public class AuthController {
-    private final AuthService authService;
-    private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.authenticate(loginDTO));
+    public AuthController(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
-        String token = getTokenFromRequest(request);
-        if (token != null) {
-            authService.logout(token);
-            return ResponseEntity.ok("Successfully logged out");
+    @PostMapping("/authenticate")
+    public AuthenticationResponse createToken(@RequestBody AuthenticationRequest request) {
+        log.info("createToken(-)");
+
+        // Authenticate the user, this will return a UserDetails object
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+
+        // Cast the UserDetails object to UserEntity
+        if (userDetails instanceof UserEntity userEntity) {
+            String role = userEntity.getRole().name();
+
+            String jwtToken = jwtUtil.generateToken(request.getUsername(), role);
+
+            return new AuthenticationResponse(jwtToken);
+        } else {
+            throw new RuntimeException("User not found or invalid UserDetails object.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token is missing");
     }
 
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+
+    @GetMapping("/validate-token")
+    public ResponseEntity<?> getUserRoleFromToken(@RequestHeader("Authorization") String token) {
+        // Kontrollera att token är i rätt format "Bearer <token>"
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7); // Ta bort "Bearer " från början
+        } else {
+            return ResponseEntity.badRequest().body("Invalid token format.");
         }
-        return null;
-    }
 
+        // Validera token och extrahera claims
+        if (jwtUtil.isTokenExpired(token)) {
+            return ResponseEntity.status(401).body("Token is expired.");
+        }
+
+        // Extrahera claims och roll från token
+        Claims claims = jwtUtil.extractClaims(token);
+        String role = claims.get("role", String.class); // Extrahera roll
+
+        // Returnera roll i responsen
+        return ResponseEntity.ok().body("User role: " + role);
+    }
 
 }

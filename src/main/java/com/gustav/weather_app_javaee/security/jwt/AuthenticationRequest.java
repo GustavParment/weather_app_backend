@@ -1,9 +1,10 @@
-package com.gustav.weather_app_javaee.model.dto.user;
+package com.gustav.weather_app_javaee.security.jwt;
 
 import lombok.Data;
 
 @Data
-public class LoginDTO {
+public class AuthenticationRequest {
     private String username;
     private String password;
+    private String role;
 }

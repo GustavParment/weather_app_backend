@@ -35,6 +35,8 @@ public class UserEntity implements UserDetails {
     @NotNull(message = "Role is required")
     private UserRole role;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
