@@ -17,7 +17,7 @@ public class GenericConverter {
         return UserEntity.builder()
                 .username(dto.getUsername())
                 .password(encoder.encode(dto.getPassword()))
-                .role(dto.getRole())
+                .roles(dto.getRoles())
                 .build();
     }
 

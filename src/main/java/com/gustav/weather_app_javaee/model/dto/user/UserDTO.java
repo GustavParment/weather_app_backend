@@ -2,14 +2,14 @@ package com.gustav.weather_app_javaee.model.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gustav.weather_app_javaee.authorities.UserRole;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.gustav.weather_app_javaee.authorities.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,7 +27,9 @@ public class UserDTO {
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("role")
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @NotNull(message = "Roles are required")
+    @JsonProperty("roles")
+    private Set<Role> roles;
+
+
 }

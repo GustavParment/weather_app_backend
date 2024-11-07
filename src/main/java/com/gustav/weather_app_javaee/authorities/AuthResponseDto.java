@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.security.jwt;
+package com.gustav.weather_app_javaee.authorities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-   private String jwt;
+public class AuthResponseDto {
+   private String accessToken;
 }

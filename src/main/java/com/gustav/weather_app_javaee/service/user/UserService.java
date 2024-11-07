@@ -1,6 +1,5 @@
 package com.gustav.weather_app_javaee.service.user;
 
-import com.gustav.weather_app_javaee.security.jwt.AuthenticationRequest;
 import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
 import com.gustav.weather_app_javaee.model.UserEntity;
 

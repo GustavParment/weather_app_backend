@@ -29,8 +29,6 @@ public class WeatherController {
                     .status(HttpStatus.OK)
                     .body(weatherService.getAllWeather());
         } catch (Exception e) {
-            e.printStackTrace();
-
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Internal Server Error" + e.getMessage());
@@ -71,8 +69,9 @@ public class WeatherController {
         }
     }
 
-    @GetMapping("/{id}")
+
     @RateLimiter(name = "rateLimiter")
+    @GetMapping("/{id}")
     public ResponseEntity<WeatherEntity> getWeatherById(@PathVariable Long id) {
         Optional<WeatherEntity> weatherEntityOptional = weatherService.getWeatherById(id);
 
