@@ -4,7 +4,9 @@ import com.gustav.weather_app_javaee.Dao.WeatherDao;
 import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.service.converter.GenericConverter;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -14,10 +16,8 @@ import java.util.Optional;
 @Service
 public class WeatherServiceImpl implements WeatherService {
     private final WeatherDao weatherDao;
-    private final WeatherApiService weatherApiService;
+
     private final GenericConverter converter;
-
-
 
     @Override
     public List<WeatherEntity> getAllWeather() {
@@ -40,26 +40,13 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public WeatherEntity updateWeather(Long id, WeatherDTO weatherDTO) {
-        WeatherEntity updatedWeather = converter.convertToWeatherEntity(
-                weatherDTO.getCityName(),weatherDTO
-        );
-      return weatherDao.updateWeather(id,updatedWeather);
+    public WeatherEntity saveWeatherData(String cityName, WeatherDTO weatherDTO) {
+        WeatherEntity weatherEntity = converter.convertToWeatherEntity(cityName, weatherDTO);
 
+
+        return weatherDao.saveWeatherData(weatherEntity);
     }
 
-    @Override
-    public Mono<WeatherEntity> fetchAndSaveWeatherData(String cityName) {
-        return weatherApiService.getWeatherFromExternalApi(cityName)
-                .map(weatherDTO -> addWeather(cityName, weatherDTO));
-    }
-
-    @Override
-    public WeatherEntity addWeather(String cityName, WeatherDTO weather) {
-        WeatherEntity convertedData = converter.convertToWeatherEntity(cityName,weather);
-
-        return weatherDao.saveWeatherData(convertedData);
-    }
 
     @Override
     public Optional <Double> getAverageTemperature(String cityName) {

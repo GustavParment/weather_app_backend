@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.authorities;
+package com.gustav.weather_app_javaee.controller.user;
 
 import com.gustav.weather_app_javaee.service.weather.WeatherService;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/")
 public class SimpleController {
-    private final WeatherService weatherService;
-
-    public SimpleController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
+    /*TODO
+       -Ta bort i produktion Endast för att testa Auth
+    * */
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/admin")
@@ -22,7 +20,7 @@ public class SimpleController {
         return ResponseEntity.ok("Hello Admin");
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/user")
     public ResponseEntity<String> helloUser(){
         return ResponseEntity.ok("Hello User");

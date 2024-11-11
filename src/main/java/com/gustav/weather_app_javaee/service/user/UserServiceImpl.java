@@ -3,18 +3,20 @@ package com.gustav.weather_app_javaee.service.user;
 import com.gustav.weather_app_javaee.Dao.UserDao;
 
 
-import com.gustav.weather_app_javaee.authorities.Role;
+import com.gustav.weather_app_javaee.authorities.userrole.Role;
+import com.gustav.weather_app_javaee.authorities.userrole.RoleEnum;
+import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
 import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
-import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.model.User;
 import com.gustav.weather_app_javaee.repo.RoleRepository;
 import com.gustav.weather_app_javaee.service.converter.GenericConverter;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -22,64 +24,44 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final GenericConverter converter;
     private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    /*TODO
+       -Implementera RoleDao
+       -Skriva Tester
+       - Bryta ut kod
+    * */
 
 
     @Override
-    public UserEntity addUser(UserDTO dto) {
-        // Hämta eller skapa roller
-        Set<Role> roles = new HashSet<>();
-        for (Role role : dto.getRoles()) {
-            Role existingRole = roleRepository.findByName(role.getName());
-            if (existingRole != null) {
-                roles.add(existingRole);  // Lägg till den befintliga rollen
-            } else {
-                // Om rollen inte finns, skapa och spara den
-                roleRepository.save(role);
-                roles.add(role);
-            }
-        }
+    public User updateUser(UserDTO dto) {
 
-        // Skapa användaren med de sparade rollerna
-        UserEntity convertedUser = converter.convertToUserEntity(dto);
-        convertedUser.setRoles(roles);
-
-        // Spara användaren
-        return userDao.addUser(convertedUser);
-    }
-
-    @Override
-    public UserEntity updateUser(UserDTO dto) {
-        // Samma sak här, hämta eller skapa roller
-        Set<Role> roles = new HashSet<>();
-        for (Role role : dto.getRoles()) {
-            Role existingRole = roleRepository.findByName(role.getName());
-            if (existingRole != null) {
-                roles.add(existingRole);
-            } else {
-                roleRepository.save(role);
-                roles.add(role);
-            }
-        }
-
-        // Uppdatera användaren med de sparade rollerna
-        UserEntity convertedUser = converter.convertToUserEntity(dto);
-        convertedUser.setRoles(roles);
-
+        User convertedUser = converter.convertToUserEntity(dto);
         return userDao.updateUser(convertedUser);
     }
 
-
-
     @Override
-    public UserEntity getUserById(Long id) {
+    public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
 
     @Override
-    public boolean findUserByName(String name) {
-        return userDao.findUser(name) != null;
+    public User createAdministrator(RegisterUserDto input) {
+        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
+        if (optionalRole.isEmpty()) {
+            return null;
+        }
+
+        var adminUser = new User();
+                adminUser.setFullName(input.getFullName());
+                adminUser.setEmail(input.getEmail());
+                adminUser.setPassword(passwordEncoder.encode(input.getPassword()));
+                adminUser.setRole(optionalRole.get());
+
+        return userDao.createAdmin(adminUser);
     }
 
-
-
+    @Override
+    public List<User> allUsers() {
+        return userDao.findAll();
+    }
 }

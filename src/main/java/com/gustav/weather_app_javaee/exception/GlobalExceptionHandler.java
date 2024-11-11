@@ -29,6 +29,11 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    /*TODO
+       -Implementera mer global exceptions
+       -Använda dom i endpoints för Weather och User
+    * */
+
 
 
 

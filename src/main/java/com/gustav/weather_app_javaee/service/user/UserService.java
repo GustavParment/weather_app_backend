@@ -1,13 +1,16 @@
 package com.gustav.weather_app_javaee.service.user;
 
+import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
 import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
-import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.model.User;
+
+import java.util.List;
 
 public interface UserService {
-    UserEntity addUser(UserDTO user);
-    UserEntity updateUser(UserDTO user);
-    UserEntity getUserById(Long id);
-    boolean findUserByName(String name);
+    User updateUser(UserDTO user);
+    User getUserById(Long id);
+    User createAdministrator(RegisterUserDto user);
+    List<User> allUsers();
 
 
 }

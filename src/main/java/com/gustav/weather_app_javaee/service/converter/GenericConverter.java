@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.service.converter;
 
-import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.model.User;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
 import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
@@ -12,14 +12,21 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class GenericConverter {
     private final PasswordEncoder encoder;
+    /*TODO
+       -Implementera convertToUserEntity i servicen?
+    * */
 
-    public UserEntity convertToUserEntity(UserDTO dto) {
-        return UserEntity.builder()
-                .username(dto.getUsername())
-                .password(encoder.encode(dto.getPassword()))
-                .roles(dto.getRoles())
-                .build();
+    public User convertToUserEntity(UserDTO dto) {
+        User user = new User();
+                user.setFullName((dto.getFullName()));
+                user.setEmail(dto.getEmail());
+                user .setPassword(encoder.encode(dto.getPassword()));
+                user.setCreatedAt(dto.getCreatedAt());
+                user.setUpdatedAt(dto.getUpdatedAt());
+
+        return user;
     }
+
 
     public WeatherEntity convertToWeatherEntity(String cityName, WeatherDTO dto) {
         return WeatherEntity.builder()

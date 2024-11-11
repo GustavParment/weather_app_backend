@@ -2,34 +2,38 @@ package com.gustav.weather_app_javaee.model.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gustav.weather_app_javaee.authorities.Role;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import java.util.Date;
 
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
-    @NotBlank(message = "Username is required")
-    @JsonProperty("username")
-    private String username;
 
-    @NotBlank(message ="Password is required")
-    @Size(min = 6, message = "Passowrd must be at least 6 characters long")
+    @NotBlank(message = "Full name is required")
+    @JsonProperty("fullName")
+    private String fullName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
+    @JsonProperty("email")
+    private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     @JsonProperty("password")
     private String password;
 
-    @NotNull(message = "Roles are required")
-    @JsonProperty("roles")
-    private Set<Role> roles;
+    @JsonProperty("createdAt")
+    private Date createdAt;
 
-
+    @JsonProperty("updatedAt")
+    private Date updatedAt;
 }

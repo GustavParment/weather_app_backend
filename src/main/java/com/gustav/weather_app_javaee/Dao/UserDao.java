@@ -1,15 +1,16 @@
 package com.gustav.weather_app_javaee.Dao;
 
-import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.model.User;
 
 import java.util.List;
 
 public interface UserDao {
-    List<UserEntity> findUserStartingWith(String prefix);
+    List<User> findUserStartingWith(String prefix);
     boolean updatePassword(String username, String password);
-    UserEntity addUser(UserEntity user);
-    UserEntity updateUser(UserEntity user);
-    UserEntity getUserById(Long id);
-    UserEntity findUser(String username);
+    User addUser(User user);
+    User updateUser(User user);
+    User getUserById(Long id);
+    List<User> findAll();
+    User createAdmin(User user);
 
 }
