@@ -4,7 +4,9 @@ import com.gustav.weather_app_javaee.authorities.jwt.JwtService;
 import com.gustav.weather_app_javaee.authorities.userrole.Role;
 import com.gustav.weather_app_javaee.authorities.userrole.RoleEnum;
 import com.gustav.weather_app_javaee.model.UserEntity;
+import com.gustav.weather_app_javaee.model.dto.user.LoginUserDto;
 import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
+import com.gustav.weather_app_javaee.service.user.AuthenticationService;
 import com.gustav.weather_app_javaee.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,7 @@ class AdminControllerTest {
 
     private ObjectMapper mapper;
 
+
     @BeforeEach
     void setUp() {
         mapper = new ObjectMapper();
@@ -53,15 +56,17 @@ class AdminControllerTest {
     void test_Create_Admin_With_SuperAdmin_Role() throws Exception {
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setFullName("John Doe");
-        registerUserDto.setEmail("Admin@gustav.com");
+        registerUserDto.setEmail("adminUser");
         registerUserDto.setPassword("123");
 
+        Role role = new Role();
+        role.setName(RoleEnum.ADMIN);
         UserEntity createAdminUser = new UserEntity();
 
         createAdminUser.setFullName("John Doe");
-        createAdminUser.setEmail("Admin@gustav.com");
+        createAdminUser.setEmail("adminUser");
         createAdminUser.setPassword("123");
-
+        createAdminUser.setRole(role);
 
 
         when(userService.createAdministrator(Mockito.any(RegisterUserDto.class))).thenReturn(createAdminUser);

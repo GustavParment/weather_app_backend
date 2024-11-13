@@ -16,7 +16,6 @@ import java.util.List;
 public class UserDaoImpl implements UserDao{
     private final UserRepository userRepository;
 
-
     @Override
     public List<UserEntity> findUserStartingWith(String prefix) {
         return userRepository.findByUsernameStartingWith(prefix);
@@ -38,9 +37,8 @@ public class UserDaoImpl implements UserDao{
     @Override
     public UserEntity save(UserEntity userEntity) {
         if (userRepository.existsByEmail(userEntity.getEmail())){
-            throw new UserAlreadyExistsException("""
-                    User with this email already exists
-                    """);
+            throw new UserAlreadyExistsException
+                    ("User with this email already exists");
 
         }
         return userRepository.save(userEntity);
@@ -50,9 +48,8 @@ public class UserDaoImpl implements UserDao{
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UserNotFoundException("""
-                                User with this email does not exist
-                                """)
+                        new UserNotFoundException
+                                ("User with this email does not exist")
                 );
     }
 
@@ -65,7 +62,10 @@ public class UserDaoImpl implements UserDao{
     public UserEntity getUserById(Long id) {
         return userRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(()->
+                        new UserNotFoundException
+                                ("User with this id does not exist")
+                        );
     }
 
     @Override
@@ -73,7 +73,6 @@ public class UserDaoImpl implements UserDao{
         return new ArrayList<>(userRepository.findAll());
 
     }
-
 
     @Override
     public UserEntity createAdmin(UserEntity admin) {

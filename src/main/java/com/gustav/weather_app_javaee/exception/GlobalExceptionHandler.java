@@ -31,8 +31,7 @@ public class GlobalExceptionHandler {
 
     /*TODO
        -Implementera mer global exceptions
-       -Använda dom i endpoints för Weather och User
-    * */
+      * */
 
 
 

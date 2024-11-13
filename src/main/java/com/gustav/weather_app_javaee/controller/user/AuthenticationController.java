@@ -21,6 +21,11 @@ public class AuthenticationController {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
 
+    /*TODO
+       -Skriva Tester
+       -Kolla över felhantering
+    * */
+
     public AuthenticationController(
             JwtService jwtService,
             AuthenticationService authenticationService
@@ -40,7 +45,10 @@ public class AuthenticationController {
 
     @RateLimiter(name = "rateLimiter")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(
+            @RequestBody LoginUserDto loginUserDto
+    )
+    {
         UserEntity authenticatedUserEntity = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUserEntity);
