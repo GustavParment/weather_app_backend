@@ -3,6 +3,7 @@ package com.gustav.weather_app_javaee.security;
 import com.gustav.weather_app_javaee.authorities.jwt.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,13 +30,19 @@ import java.util.List;
 public class SecurityFilterChainClass {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityFilterChainClass(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityFilterChainClass(
+            JwtAuthenticationFilter jwtAuthenticationFilter
+    )
+    {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, HttpSession httpSession) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception
+    {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -54,10 +61,11 @@ public class SecurityFilterChainClass {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
+                .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 );
+
+        log.info(http.toString());
 
         return http.build();
     }

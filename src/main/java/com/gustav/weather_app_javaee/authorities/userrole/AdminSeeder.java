@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.authorities.userrole;
 
-import com.gustav.weather_app_javaee.model.User;
+import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
 import com.gustav.weather_app_javaee.repo.RoleRepository;
 import com.gustav.weather_app_javaee.repo.UserRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /*TODO
-   -Maskera denna klass i produktion
+   -Maskera denna klass i produktion?
    -Hitta ett mer dynamiskt sätt att skapa Super Admin på?
 * */
 
@@ -46,13 +46,13 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setPassword("123");
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(userDto.getEmail());
 
         if (optionalRole.isEmpty() || optionalUser.isPresent()) {
             return;
         }
 
-        var user = new User();
+        var user = new UserEntity();
                 user.setFullName(userDto.getFullName());
                 user.setEmail(userDto.getEmail());
                 user.setPassword(passwordEncoder.encode(userDto.getPassword()));

@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.controller.user;
 
-import com.gustav.weather_app_javaee.model.User;
+import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
 import com.gustav.weather_app_javaee.service.user.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class AdminController {
 
     @PostMapping
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public ResponseEntity<User> createAdministrator(@RequestBody RegisterUserDto registerUserDto) {
-        User createdAdmin = userService.createAdministrator(registerUserDto);
+    public ResponseEntity<UserEntity> createAdministrator(@RequestBody RegisterUserDto registerUserDto) {
+        UserEntity createdAdmin = userService.createAdministrator(registerUserDto);
 
         return ResponseEntity.ok(createdAdmin);
     }

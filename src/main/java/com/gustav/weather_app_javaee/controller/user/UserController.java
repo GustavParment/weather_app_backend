@@ -1,9 +1,7 @@
 package com.gustav.weather_app_javaee.controller.user;
 
-import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
 import com.gustav.weather_app_javaee.exception.UserNotFoundException;
-import com.gustav.weather_app_javaee.model.User;
-import com.gustav.weather_app_javaee.model.dto.user.UserDTO;
+import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.service.user.UserService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
@@ -18,17 +16,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PreAuthorize("")
+    @PreAuthorize("hasRole('ADMIN')")
     @RateLimiter(name = "rateLimiter")
     @GetMapping("/by/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user == null) {
+        UserEntity userEntity = userService.getUserById(id);
+        if (userEntity == null) {
             throw new UserNotFoundException("No user found with id: " + id);
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("USER Info retrieved successfully: " + user);
+                .body("USER Info retrieved successfully: " + userEntity);
 
     }
 }

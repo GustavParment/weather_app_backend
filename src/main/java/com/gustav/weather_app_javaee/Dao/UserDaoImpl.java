@@ -1,6 +1,8 @@
 package com.gustav.weather_app_javaee.Dao;
 
-import com.gustav.weather_app_javaee.model.User;
+import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
+import com.gustav.weather_app_javaee.exception.UserNotFoundException;
+import com.gustav.weather_app_javaee.model.UserEntity;
 import com.gustav.weather_app_javaee.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -16,17 +18,17 @@ public class UserDaoImpl implements UserDao{
 
 
     @Override
-    public List<User> findUserStartingWith(String prefix) {
+    public List<UserEntity> findUserStartingWith(String prefix) {
         return userRepository.findByUsernameStartingWith(prefix);
     }
 
     @Override
     @Transactional
     public boolean updatePassword(String email, String password) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user != null) {
-            user.setPassword(password);
-            userRepository.save(user);
+        UserEntity userEntity = userRepository.findByEmail(email).orElse(null);
+        if (userEntity != null) {
+            userEntity.setPassword(password);
+            userRepository.save(userEntity);
 
             return true;
         }
@@ -34,31 +36,47 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public UserEntity save(UserEntity userEntity) {
+        if (userRepository.existsByEmail(userEntity.getEmail())){
+            throw new UserAlreadyExistsException("""
+                    User with this email already exists
+                    """);
+
+        }
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UserNotFoundException("""
+                                User with this email does not exist
+                                """)
+                );
     }
 
     @Override
-    public User getUserById(Long id) {
+    public UserEntity updateUser(UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserEntity getUserById(Long id) {
         return userRepository
                 .findById(id)
                 .orElse(null);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<UserEntity> findAll() {
         return new ArrayList<>(userRepository.findAll());
 
     }
 
 
     @Override
-    public User createAdmin(User admin) {
+    public UserEntity createAdmin(UserEntity admin) {
         return userRepository.save(admin);
     }
 

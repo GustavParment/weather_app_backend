@@ -3,12 +3,9 @@ package com.gustav.weather_app_javaee.service.weather;
 import com.gustav.weather_app_javaee.Dao.WeatherDao;
 import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
-import com.gustav.weather_app_javaee.service.converter.GenericConverter;
-import jakarta.servlet.http.HttpServletRequest;
+import com.gustav.weather_app_javaee.component.converter.GenericConverter;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;

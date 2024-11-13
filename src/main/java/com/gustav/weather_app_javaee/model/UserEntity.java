@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @Table(name = "users")
 @Entity
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
 
 
