@@ -80,7 +80,9 @@ public class WeatherApiController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public Mono<ResponseEntity<WeatherDTO>> saveWeatherData(@PathVariable String city, HttpServletRequest request) {
         System.out.println("DEBUGGING TOKEN IN ENDPOINT: " + jwtService.extractJwtFromRequest(request));
+
         String jwtToken = getJwtTokenFromRequest(request);
+
         if (jwtToken == null || jwtToken.isEmpty()) {
             return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
         }
