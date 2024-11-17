@@ -10,13 +10,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @RateLimiter(name = "rateLimiter")
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUser() {
+       List <UserEntity> userEntityList = userService.allUsers();
+        if (userEntityList.isEmpty()) {
+            throw new UserNotFoundException("No User Data");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.allUsers());
+
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     @RateLimiter(name = "rateLimiter")
     @GetMapping("/by/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
@@ -26,7 +42,7 @@ public class UserController {
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body("USER Info retrieved successfully: " + userEntity);
+                .body("USER Info retrieved successfully: " + userService.getUserById(id));
 
     }
 }

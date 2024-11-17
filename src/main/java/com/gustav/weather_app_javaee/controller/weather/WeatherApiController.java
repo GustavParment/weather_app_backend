@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public class WeatherApiController {
 
     /*TODO
-       -Skriva nya tester
-       - Kolla över logiken i endpoints
+       -Lägga till UpdateEndpoint
     * */
 
     private final WebClient webClient;
