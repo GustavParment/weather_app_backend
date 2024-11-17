@@ -18,12 +18,11 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     /*TODO
-       -Lägga till RateLimiter
-       -Skriva Tester
        -One-liners i felhantering?
 
     * */
 
+    @RateLimiter(name = "rateLimiter")
     @GetMapping("/all")
     public ResponseEntity<?> getAllWeatherFromDb() {
         try {
@@ -42,6 +41,7 @@ public class WeatherController {
         }
     }
 
+    @RateLimiter(name = "rateLimiter")
     @GetMapping("/average-temp/{cityName}")
     public ResponseEntity<String> getAverageTemperature(@PathVariable String cityName) {
         return weatherService.getAverageTemperature(cityName)
@@ -53,6 +53,7 @@ public class WeatherController {
                         .body("No weather data found for city: " + cityName));
     }
 
+    @RateLimiter(name = "rateLimiter")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteWeatherById(@PathVariable Long id) {
         boolean deleted = weatherService.deleteWeatherById(id);

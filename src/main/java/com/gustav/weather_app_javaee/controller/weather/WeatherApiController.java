@@ -77,7 +77,7 @@ public class WeatherApiController {
 
 
     @PostMapping("/save/{city}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'SUPER_ADMIN')")
     public Mono<ResponseEntity<WeatherDTO>> saveWeatherData(@PathVariable String city, HttpServletRequest request) {
         System.out.println("DEBUGGING TOKEN IN ENDPOINT: " + jwtService.extractJwtFromRequest(request));
 

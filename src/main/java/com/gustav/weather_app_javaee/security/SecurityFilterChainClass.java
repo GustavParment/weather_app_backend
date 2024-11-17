@@ -55,7 +55,7 @@ public class SecurityFilterChainClass {
                                 .requestMatchers("/api/v1/user/add").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .anyRequest().authenticated()
-//
+
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
