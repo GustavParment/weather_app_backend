@@ -71,7 +71,7 @@ class AdminControllerTest {
 
         when(userService.createAdministrator(Mockito.any(RegisterUserDto.class))).thenReturn(createAdminUser);
 
-        mockMvc.perform(post("/admins")
+        mockMvc.perform(post("/admin/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(registerUserDto)))
                         .andExpect(status().isOk())

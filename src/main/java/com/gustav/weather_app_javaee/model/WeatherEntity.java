@@ -55,4 +55,7 @@ public class WeatherEntity {
     @Column(name = "weather_description")
     private String weatherDescription;
 
+    @Column(name = "icon")
+    private String icon;
+
 }

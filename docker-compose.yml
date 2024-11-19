@@ -5,14 +5,31 @@ services:
     image: postgres:latest
     container_name: weatherdb-projekt-arbete-db
     environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=2gfv77f6
-        - POSTGRES_DB=weatherdb-projekt-arbete
-        - POSTGRES_HOST_AUTH_METHOD=trust
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2gfv77f6
+      POSTGRES_DB: weatherdb-projekt-arbete
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weatherdb-projekt-arbete-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/weatherdb-projekt-arbete
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2gfv77f6
+      SERVER_SSL_KEY_STORE: /app/keystore.p12
+      SERVER_SSL_KEY_STORE_PASSWORD: 2gfv77f6
+      SERVER_SSL_KEY_STORE_TYPE: PKCS12
+      SERVER_SSL_KEY_ALIAS: weatherdomain
+    ports:
+      - "8443:8443"
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:

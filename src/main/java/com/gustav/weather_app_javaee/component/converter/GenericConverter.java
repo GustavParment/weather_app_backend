@@ -77,12 +77,22 @@ public class GenericConverter {
                         .getMinTemp()
                 )
                 .weatherDescription(
-                        dto.getData().isEmpty() ? "N/A" : dto.getData()
+                        dto.getData()
+                                .isEmpty() ? "N/A" : dto.getData()
                                 .getFirst()
                                 .getWeather()
                                 .getDescription()
                 )
-                .datetime(dto.getData().isEmpty() ? "N/A" : dto.getData().getFirst().getDatetime())
+                .datetime(
+                        dto.getData()
+                                .isEmpty() ? "N/A" : dto.getData().getFirst().getDatetime())
+                .icon(
+                        dto
+                        .getData()
+                        .getFirst()
+                        .getWeather()
+                        .getIcon()
+                )
                 .build();
     }
 }

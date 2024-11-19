@@ -77,10 +77,8 @@ public ResponseEntity<LoginResponse> authenticate(
 {
     UserEntity authenticatedUserEntity = authenticationService.authenticate(loginUserDto);
 
-    // Skapa token och inkludera roller i payloaden
     String jwtToken = jwtService.generateToken(authenticatedUserEntity);
 
-    // Skapa och skicka svar
     LoginResponse loginResponse = new LoginResponse();
     loginResponse.setToken(jwtToken);
     loginResponse.setExpiresIn(jwtService.getExpirationTime());
@@ -89,7 +87,10 @@ public ResponseEntity<LoginResponse> authenticate(
 }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<String> logout(
+            @RequestHeader("Authorization") String authorizationHeader
+    )
+    {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Authorization header");
         }
