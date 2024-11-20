@@ -2,6 +2,7 @@ package com.gustav.weather_app_javaee.controller.weather;
 
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.service.weather.WeatherService;
+import net.bytebuddy.description.annotation.AnnotationSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -70,6 +72,9 @@ class WeatherControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$[0].city_name").value("Stockholm"));
 
+        assertEquals(weatherList.getFirst().getCity_name(), "Stockholm");
+        assertEquals(weatherList.getFirst().getId(), 1L);
+
     }
 
     @Test
@@ -90,6 +95,8 @@ class WeatherControllerTest {
                 .andExpect(jsonPath("$.city_name").value("Stockholm"));
 
         verify(weatherService, times(1)).getWeatherById(1L);
+
+        assertEquals(mockWeatherEntity.getCity_name(), "Stockholm");
     }
 
     @Test
@@ -102,6 +109,8 @@ class WeatherControllerTest {
                 .andExpect(content().string(""));
 
         verify(weatherService, times(1)).getWeatherById(1L);
+
+        assertEquals(weatherService.getWeatherById(1L),Optional.empty());
     }
 
 }

@@ -82,7 +82,9 @@ public class WeatherApiController {
     @RateLimiter(name ="rateLimiter")
     @PostMapping("/save/{city}")
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'SUPER_ADMIN')")
-    public Mono<ResponseEntity<WeatherDTO>> saveWeatherData(@PathVariable String city, HttpServletRequest request) {
+    public Mono<ResponseEntity<WeatherDTO>> saveWeatherData(
+            @PathVariable String city,
+            HttpServletRequest request) {
         String jwtToken = getJwtTokenFromRequest(request);
 
         if (jwtToken == null || jwtToken.isEmpty()) {

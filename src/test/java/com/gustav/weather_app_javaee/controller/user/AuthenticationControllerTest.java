@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -84,6 +85,10 @@ class AuthenticationControllerTest {
                         .content(objectMapper.writeValueAsString(registerUserDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is("testUser")));
+
+        assertEquals(userEntity.getEmail(), registerUserDto.getEmail());
+
+
     }
 
     @Test
@@ -100,6 +105,9 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token", is(fakeJwtToken)))
                 .andExpect(jsonPath("$.expiresIn", is(3600)));
+
+        assertEquals(userEntity.getEmail(), loginUserDto.getEmail());
+
     }
 
 

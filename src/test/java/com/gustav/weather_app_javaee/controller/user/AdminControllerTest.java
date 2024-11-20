@@ -76,6 +76,9 @@ class AdminControllerTest {
                         .content(mapper.writeValueAsString(registerUserDto)))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.username").value("adminUser"));
+
+        assertEquals(createAdminUser.getFullName(), registerUserDto.getFullName());
+
     }
 
 
