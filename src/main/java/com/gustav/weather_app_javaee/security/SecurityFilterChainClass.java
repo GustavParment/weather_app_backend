@@ -52,6 +52,7 @@ public class SecurityFilterChainClass {
                                 .requestMatchers("/admins").hasRole("SUPER_ADMIN")
                                 .requestMatchers( "/api/v1/weather/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/fetch/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/fetch/**").permitAll()
                                 .requestMatchers("/api/v1/user/add").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .anyRequest().authenticated()

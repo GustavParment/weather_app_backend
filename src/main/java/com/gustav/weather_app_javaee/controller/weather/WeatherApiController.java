@@ -6,6 +6,7 @@ import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.service.weather.WeatherService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/fetch")
+@Slf4j
 public class WeatherApiController {
     private final WebClient webClient;
     private final JwtService jwtService;
@@ -101,11 +103,19 @@ public class WeatherApiController {
                 .bodyToMono(WeatherDTO.class)
                 .map(weatherDTO -> {
                     weatherService.saveWeatherData(city, weatherDTO);
+                    log.info(weatherDTO.toString());
 
-                    return ResponseEntity.status(HttpStatus.CREATED).body(weatherDTO);
+                    return ResponseEntity
+                            .status(HttpStatus.CREATED)
+                            .body(weatherDTO);
                 })
-                .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).build())
+                .defaultIfEmpty(
+                        ResponseEntity
+                                .status(HttpStatus.NOT_FOUND)
+                                .body(null)
+                )
                 .doOnError(e -> System.err.println("Error saving weather data: " + e.getMessage()));
+
     }
 
     @RateLimiter(name = "rateLimiter")
@@ -113,7 +123,6 @@ public class WeatherApiController {
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'SUPER_ADMIN')")
     public Mono<ResponseEntity<WeatherEntity>> updateWeatherData(
             @PathVariable Long id,
-            @PathVariable WeatherDTO updatedWeatherDTO,
             HttpServletRequest request)
     {
         String jwtToken = getJwtTokenFromRequest(request);
@@ -147,14 +156,18 @@ public class WeatherApiController {
                         dto -> {
 
                             WeatherEntity updateWeatherW =
-                                    weatherService.updateWeather(id,updatedWeatherDTO);
+                                    weatherService.updateWeather(id,dto);
+                            log.info(dto.getCityName());
+
                             return Mono.just(
                                     ResponseEntity
                                             .status(HttpStatus.CREATED)
                                             .body(updateWeatherW));
                         })
-                .onErrorResume(e ->{
+                .onErrorResume(
+                        e ->{
                     System.out.println("Error updating weather data: " + e.getMessage());
+
                     return Mono.just(
                             ResponseEntity
                                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
