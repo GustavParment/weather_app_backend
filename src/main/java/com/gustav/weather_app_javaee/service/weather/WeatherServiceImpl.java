@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.service.weather;
 
-import com.gustav.weather_app_javaee.Dao.WeatherDao;
+import com.gustav.weather_app_javaee.Dao.weather.WeatherDao;
 import com.gustav.weather_app_javaee.model.dto.weather.WeatherDTO;
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.component.converter.GenericConverter;
@@ -48,5 +48,14 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public Optional <Double> getAverageTemperature(String cityName) {
         return weatherDao.getAverageTemperature(cityName.toUpperCase());
+    }
+
+    @Override
+    public WeatherEntity updateWeather(Long id, WeatherDTO updatedWeather) {
+        WeatherEntity weatherEntity = converter.convertToWeatherEntity(
+                updatedWeather.getCityName(),updatedWeather
+        );
+
+        return weatherDao.updateWeather(id, weatherEntity);
     }
 }

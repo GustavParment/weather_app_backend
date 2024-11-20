@@ -17,11 +17,6 @@ import java.util.Optional;
 public class WeatherController {
     private final WeatherService weatherService;
 
-    /*TODO
-       -One-liners i felhantering?
-
-    * */
-
     @RateLimiter(name = "rateLimiter")
     @GetMapping("/all")
     public ResponseEntity<?> getAllWeatherFromDb() {

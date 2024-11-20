@@ -97,7 +97,6 @@ class WeatherControllerTest {
 
         when(weatherService.getWeatherById(1L)).thenReturn(Optional.empty());
 
-        // Perform the GET request and verify the response
         mockMvc.perform(get("/api/v1/weather/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));

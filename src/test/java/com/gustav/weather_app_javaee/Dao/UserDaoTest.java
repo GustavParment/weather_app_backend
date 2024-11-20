@@ -1,5 +1,6 @@
 package com.gustav.weather_app_javaee.Dao;
 
+import com.gustav.weather_app_javaee.Dao.user.UserDaoImpl;
 import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
 import com.gustav.weather_app_javaee.exception.UserNotFoundException;
 import com.gustav.weather_app_javaee.model.UserEntity;

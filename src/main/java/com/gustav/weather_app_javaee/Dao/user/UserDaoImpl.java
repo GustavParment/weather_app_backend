@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.Dao;
+package com.gustav.weather_app_javaee.Dao.user;
 
 import com.gustav.weather_app_javaee.exception.UserAlreadyExistsException;
 import com.gustav.weather_app_javaee.exception.UserNotFoundException;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
     private final UserRepository userRepository;
 
     @Override

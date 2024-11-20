@@ -17,5 +17,6 @@ public interface WeatherService {
     boolean deleteWeatherById(Long id);
     WeatherEntity saveWeatherData(String cityName, WeatherDTO weatherDTO);
     Optional<Double> getAverageTemperature(String cityName);
+    WeatherEntity updateWeather(Long id, WeatherDTO updatedWeather);
 
 }//TODO getWeatherByCity kanske lite onödig?

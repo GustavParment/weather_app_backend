@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.Dao;
+package com.gustav.weather_app_javaee.Dao.weather;
 
 import com.gustav.weather_app_javaee.model.WeatherEntity;
 import com.gustav.weather_app_javaee.repo.WeatherRepository;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 @AllArgsConstructor
-public class WeatherDaoImpl implements WeatherDao{
+public class WeatherDaoImpl implements WeatherDao {
     private WeatherRepository weatherRepository;
 
     @Override

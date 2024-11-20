@@ -1,4 +1,4 @@
-package com.gustav.weather_app_javaee.Dao;
+package com.gustav.weather_app_javaee.Dao.user;
 
 import com.gustav.weather_app_javaee.model.UserEntity;
 

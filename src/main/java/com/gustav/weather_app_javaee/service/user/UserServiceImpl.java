@@ -1,6 +1,6 @@
 package com.gustav.weather_app_javaee.service.user;
 
-import com.gustav.weather_app_javaee.Dao.UserDao;
+import com.gustav.weather_app_javaee.Dao.user.UserDao;
 
 
 import com.gustav.weather_app_javaee.model.dto.user.RegisterUserDto;
